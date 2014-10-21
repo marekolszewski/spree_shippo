@@ -32,7 +32,7 @@ module SpreeShippoLabels
   end
 
   def self.build_shippo_user_email
-      Spree::Store.name.gsub(/[^0-9A-Za-z]/, '').downcase + @spree_shippo_user_email
+      Spree::Config.site_name.gsub(/[^0-9A-Za-z]/, '').downcase + @spree_shippo_user_email
   end
 
   def self.get_orders_url(email, order_id='')
@@ -48,8 +48,8 @@ module SpreeShippoLabels
 
   def self.get_store_params(email)
       { 
-          :store_name => Spree::Store.current.name, 
-          :store_url => Spree::Store.current.url,
+          :store_name => Spree::Config.site_name, 
+          :store_url => Spree::Config.site_url,
           :email => email
       }
   end
