@@ -50,7 +50,8 @@ module SpreeShippoLabels
       { 
           :store_name => Spree::Config.site_name, 
           :store_url => Spree::Config.site_url,
-          :email => email
+          :email => email,
+          :force_registration => Rails.configuration.shippo_register_automatically
       }
   end
 
