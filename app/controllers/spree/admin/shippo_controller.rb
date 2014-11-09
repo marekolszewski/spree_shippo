@@ -3,6 +3,11 @@ class Spree::Admin::ShippoController < Spree::Admin::BaseController
 
     def show
         @user = SpreeShippoLabels.get_shippo_user
+        @shippo_connect_endpoint = SpreeShippoLabels.get_auth_url
+        @store_url = SpreeShippoLabels.get_store_url
+        @store_name = SpreeShippoLabels.get_store_name
+        @partner_key = Rails.configuration.shippo_partner_key
+        @api_token = SpreeShippoLabels.get_api_token
     end
 
     def view_order

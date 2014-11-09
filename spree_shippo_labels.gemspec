@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.3'
 
   s.author    = 'Wissam Jarjoui & Simon Kreuz'
-  s.email     = 'wissam@example.com'
+  s.email     = 'support@goshippo.com'
   s.homepage  = 'https://goshippo.com'
 
   #s.files       = `git ls-files`.split("\n")
