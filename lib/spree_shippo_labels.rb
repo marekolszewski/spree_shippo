@@ -1,5 +1,8 @@
 require 'spree_core'
 require 'spree_shippo_labels/engine'
+require 'openssl'
+require 'base64'
+require 'digest'
 
 module SpreeShippoLabels
     @spree_shippo_user_email = "+spree@goshippo.com"
@@ -66,6 +69,7 @@ module SpreeShippoLabels
             :store_url => get_store_url,
             :email => email
         }
+    end
 
     def self.get_api_token
         if Rails.configuration.shippo_partner_secret.blank? || Rails.configuration.shippo_partner_key.blank? || Rails.configuration.shippo_partner_secret.length != 32
@@ -92,5 +96,4 @@ module SpreeShippoLabels
         # return iv and encrypted message with padding
         return iv + cipher.update(message) + cipher.final
     end
-
 end
