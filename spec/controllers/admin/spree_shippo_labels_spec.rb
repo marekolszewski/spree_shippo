@@ -4,8 +4,6 @@ describe SpreeShippoLabels do
   class DummyClass
   end
 
-  let!(:store) { FactoryGirl.create(:store) }
-
   before(:all) do
     @dummy = DummyClass.new
     @dummy.extend SpreeShippoLabels
@@ -52,7 +50,7 @@ describe SpreeShippoLabels do
   describe "get_api_token_with_partner" do
     it "returns encrypted api token" do
       Rails.configuration.shippo_partner_key = 'shippo'
-      Rails.configuration.shippo_partner_secret = 'Shippopartnersecret_32characters'
+      Rails.configuration.shippo_partner_secret = '6fEhcH9FaAm95qNxpCDDiC5lagDJ+qrP40uDipFLVBA='
       expect(SpreeShippoLabels.get_api_token).not_to be_nil 
     end
   end
@@ -60,7 +58,7 @@ describe SpreeShippoLabels do
   describe "get_api_token_with_partner_wrong_length" do
     it "does not return the api token" do
       Rails.configuration.shippo_partner_key = 'shippo'
-      Rails.configuration.shippo_partner_secret = 'Shippopartnersecret31characters'
+      Rails.configuration.shippo_partner_secret = '6fEhcH9FaAm95qNxpCDDiC5lagDJ+qrP40uDipFLV'
       expect(SpreeShippoLabels.get_api_token).to be_nil 
     end
   end
