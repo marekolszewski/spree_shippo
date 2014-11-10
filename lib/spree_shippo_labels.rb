@@ -92,7 +92,7 @@ module SpreeShippoLabels
         # create AES-256 Cipher
         cipher = OpenSSL::Cipher::AES.new(256, :CBC)
         cipher.encrypt
-        cipher.key = Rails.configuration.shippo_partner_secret
+        cipher.key = Base64.decode64(Rails.configuration.shippo_partner_secret)
         # create new, random iv
         iv = OpenSSL::Cipher::AES.new(256, :CBC).random_iv
         cipher.iv = iv
