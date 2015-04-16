@@ -12,11 +12,12 @@
 #             tracking and shipment information when a shipping
 #             label is purchased
 ##########################################################
-SpreeShippoLabels::Config.setup_instance({
-                                           partner_key:    nil,
-                                           partner_secret: nil
-                                         }, {
-                                           automatic_register_shippo_user: false,
-                                           store_usps_enabled:             false,
-                                           automatic_update_shipping:      false
-                                         })
+SpreeShippoLabels::Config.setup({
+                                  partner_key:    nil,
+                                  partner_secret: nil
+                                })
+SpreeShippoLabels::Config.instance.add_store_config({
+                                                      automatic_register_shippo_user: false,
+                                                      store_usps_enabled:             false,
+                                                      automatic_update_shipping:      false
+                                                    })

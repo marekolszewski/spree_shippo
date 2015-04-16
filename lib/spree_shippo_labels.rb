@@ -23,14 +23,9 @@ module SpreeShippoLabels
     api_user
   end
 
-  def self.get_orders_url(email, order_id='', params={})
+  def self.get_orders_url(order_id='', params={})
     uri       = URI([BASE_URL, SPREE_ENDPOINT, ORDER_ENDPOINT, order_id.blank? ? nil : order_id].compact.join('/'))
-    params    = {
-      store_name: Config.instance.store_name,
-      store_url:  Config.instance.store_url,
-      email:      email
-    }.merge(params)
-    uri.query = params.to_query
+    uri.query = params.to_query if params.present?
     uri.to_s
   end
 
@@ -68,26 +63,12 @@ module SpreeShippoLabels
   class Config
     include Singleton
     class << self
-      def setup_instance(partner_config, store_config={})
-        api_email    = build_api_user_email
-        store_config = {
-          store_name:           Spree::Config.site_name,
-          api_user_email:       api_email,
-          api_user_login:       api_email,
-          store_url:            Spree::Config.site_url,
-          automatic_register_shippo_user: false,
-          store_usps_enabled: false,
-          automatic_update_shipping: false
-        }.merge(store_config)
-        @@_instance  = new(partner_config, store_config)
-      end
-
-      def build_api_user_email
-        return Spree::Config.site_name.gsub(/[^0-9A-Za-z]/, '').downcase + SPREE_SHIPPO_USER_EMAIL
+      def setup(partner_config)
+        @@_instance = new(partner_config)
       end
 
       def instance
-        raise "please call setup_instance to initialize the instance before using it" unless @@_instance.present?
+        raise "please call setup to initialize the instance before using it" unless @@_instance.present?
         @@_instance
       end
 
@@ -100,13 +81,31 @@ module SpreeShippoLabels
                   :store_name, :api_user_email, :api_user_login, :store_url, :store_merchant_email,
                   :automatic_register_shippo_user, :store_usps_enabled, :automatic_update_shipping
 
-    def initialize(partner_config, store_config={})
+    def initialize(partner_config)
       @partner_key    = partner_config[:partner_key]
       @partner_secret = partner_config[:partner_secret]
+    end
+
+    def add_store_config(store_config={})
+      store_config                  = {
+        store_name:                     Spree::Config.site_name,
+        store_url:                      Spree::Config.site_url,
+        automatic_register_shippo_user: true,
+        store_usps_enabled:             true,
+        automatic_update_shipping:      false
+      }.merge(store_config)
+      api_email                     = build_api_user_email(store_config[:store_name])
+      store_config[:api_user_email] ||= api_email
+      store_config[:api_user_login] ||= api_email
 
       store_config.keys.each do |key|
         self.instance_variable_set("@#{key}".to_sym, store_config[key])
       end
     end
+
+    def build_api_user_email(store_name)
+      return store_name.gsub(/[^0-9A-Za-z]/, '').downcase + SPREE_SHIPPO_USER_EMAIL
+    end
+
   end
 end
