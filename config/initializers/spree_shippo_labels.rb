@@ -1,14 +1,22 @@
 ##########################################################
-# SHIPPO PARTNER ACCESS SETTINGS
+# partner_config - SHIPPO PARTNER ACCESS SETTINGS
 # The partner key is the human-readable Shippo partner name.
-# The partner secret is a 32 character token, issued by Shippo.
+# The partner secret is a 32 character token, issued by Shippo
+#
+# store config
+#  automatic_register_shippo_user: automatically register a new
+#             user and email a temp password to the merchant email
+#  store_usps_enabled: if the store has usps enabled by default,
+#             the carrier selection is skipped in shippo onboarding flow
+#  automatic_update_shipping: update the spree store orders with
+#             tracking and shipment information when a shipping
+#             label is purchased
 ##########################################################
-Rails.configuration.shippo_partner_key = nil
-Rails.configuration.shippo_partner_secret = nil
-##########################################################
-# SHIPPO PARTNER AUTHENTICATION SETTINGS
-# These settings can only be used if a partner key and 
-# secret have been set.
-##########################################################
-Rails.configuration.shippo_register_automatically = false
-Rails.configuration.shippo_user_usps_set = false
+SpreeShippoLabels::Config.setup_instance({
+                                           partner_key:    nil,
+                                           partner_secret: nil
+                                         }, {
+                                           automatic_register_shippo_user: false,
+                                           store_usps_enabled:             false,
+                                           automatic_update_shipping:      false
+                                         })
