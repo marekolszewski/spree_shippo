@@ -8,7 +8,7 @@ module SpreeShippoLabels
   SPREE_SHIPPO_USER_EMAIL = "+spree@goshippo.com"
   BASE_URL                = "https://goshippo.com"
   SPREE_ENDPOINT          = "spreecommerce"
-  AUTH_ENDPOINT           = "auth"
+  AUTH_ENDPOINT           = "auth/"
   ORDER_ENDPOINT          = "orders"
 
   def self.get_shippo_user
