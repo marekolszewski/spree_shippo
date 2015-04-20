@@ -5,3 +5,13 @@ gem 'spree', github: 'spree/spree', branch: '2-2-stable'
 gem 'spree_auth_devise', github: 'spree/spree_auth_devise', branch: '2-2-stable'
 
 gemspec
+
+group :development, :test do
+  gem 'rails', '~> 4.0.5'
+  gem 'factory_girl_rails', '~> 4.0'
+  gem 'simplecov-rcov'
+  gem 'yarjuf'
+  gem 'require_all'
+  gem 'byebug'
+  gem 'pry'
+end

@@ -1,22 +1,25 @@
 class Spree::Admin::ShippoController < Spree::Admin::BaseController
-    include SpreeShippoLabels
+  include SpreeShippoLabels
 
-    def show
-        @shippo_connect_endpoint = SpreeShippoLabels.get_auth_url
-        @store_url = SpreeShippoLabels.get_store_url
-        @store_name = SpreeShippoLabels.get_store_name
-        @partner_key = Rails.configuration.shippo_partner_key
-        @api_token = SpreeShippoLabels.get_api_token
-        @register_automatically = Rails.configuration.shippo_register_automatically
-        @user_usps_set = Rails.configuration.shippo_user_usps_set
-    end
+  def show
+    cfg                        = SpreeShippoLabels::Config.instance
+    @store_url                 = cfg.store_url
+    @store_name                = cfg.store_name
+    @partner_key               = cfg.partner_key
+    @user_usps_set             = cfg.store_usps_enabled
+    @register_automatically    = cfg.automatic_register_shippo_user
+    @automatic_update_shipping = cfg.automatic_update_shipping
 
-    def view_order
-        redirect_to ( SpreeShippoLabels.get_orders_url(spree_current_user.email, params[:id]) )
-    end
+    @shippo_connect_endpoint = SpreeShippoLabels.get_auth_url
+    @api_token               = SpreeShippoLabels.get_api_token
+  end
 
-    def view_orders
-        redirect_to ( SpreeShippoLabels.get_orders_url(spree_current_user.email) )
-    end
+  def view_order
+    redirect_to SpreeShippoLabels.get_orders_url(params[:id])
+  end
+
+  def view_orders
+    redirect_to SpreeShippoLabels.get_orders_url
+  end
 
 end
