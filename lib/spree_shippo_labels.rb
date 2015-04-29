@@ -24,13 +24,14 @@ module SpreeShippoLabels
   end
 
   def self.get_orders_url(order_id='', params={})
-    uri       = URI([BASE_URL, SPREE_ENDPOINT, ORDER_ENDPOINT, order_id.blank? ? nil : order_id].compact.join('/'))
+    base_url =  Config.instance.order_base_url
+    uri       = URI([base_url, order_id.blank? ? nil : order_id].compact.join('/'))
     uri.query = params.to_query if params.present?
     uri.to_s
   end
 
   def self.get_auth_url
-    [BASE_URL, SPREE_ENDPOINT, AUTH_ENDPOINT].join('/')
+    Config.instance.auth_url
   end
 
   def self.get_api_token
@@ -79,7 +80,8 @@ module SpreeShippoLabels
 
     attr_accessor :partner_key, :partner_secret,
                   :store_name, :api_user_email, :api_user_login, :store_url, :store_merchant_email,
-                  :automatic_register_shippo_user, :store_usps_enabled, :automatic_update_shipping
+                  :automatic_register_shippo_user, :store_usps_enabled, :automatic_update_shipping,
+                  :auth_url, :order_base_url
 
     def initialize(partner_config)
       @partner_key    = partner_config[:partner_key]
@@ -90,6 +92,8 @@ module SpreeShippoLabels
       store_config                  = {
         store_name:                     Spree::Config.site_name,
         store_url:                      Spree::Config.site_url,
+        auth_url:                       [BASE_URL, SPREE_ENDPOINT, AUTH_ENDPOINT].join('/'),
+        order_base_url:                 [BASE_URL, SPREE_ENDPOINT, ORDER_ENDPOINT].join('/'),
         automatic_register_shippo_user: true,
         store_usps_enabled:             true,
         automatic_update_shipping:      false

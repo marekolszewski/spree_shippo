@@ -15,6 +15,7 @@ describe SpreeShippoLabels do
   context "module methods" do
     before do
       SpreeShippoLabels::Config.setup({partner_key: 'shippo_test', partner_secret: '6fEhcH9FaAm95qNxpCDDiC5lagDJ+qrP40uDipFLVBA='})
+      SpreeShippoLabels::Config.instance.add_store_config
     end
     describe "get_orders_url" do
       it "retrieves orders url" do
@@ -76,6 +77,8 @@ describe SpreeShippoLabels do
         expect(cfg).to be
         expect(cfg.store_name).to eq('Spree Demo Site')
         expect(cfg.store_url).to eq('demo.spreecommerce.com')
+        expect(cfg.auth_url).to eq('https://goshippo.com/spreecommerce/auth/')
+        expect(cfg.order_base_url).to eq('https://goshippo.com/spreecommerce/orders')
         expect(cfg.api_user_email).to eq('spreedemosite+spree@goshippo.com')
         expect(cfg.api_user_login).to eq('spreedemosite+spree@goshippo.com')
         expect(cfg.automatic_register_shippo_user).to eq(true)
@@ -88,6 +91,8 @@ describe SpreeShippoLabels do
         SpreeShippoLabels::Config.instance.add_store_config({
                                                    store_name: (sn = 'abc'),
                                                    store_url: (su = 'a.b.c.'),
+                                                   auth_url: (au = 'http://a.b/c/d'),
+                                                   order_base_url: (obu = 'http://a.b/c/d'),
                                                    api_user_email: (aue = 'a@b.com'),
                                                    api_user_login: (aul = 'b@c.com'),
                                                    automatic_register_shippo_user: false,
@@ -98,6 +103,8 @@ describe SpreeShippoLabels do
         expect(cfg).to be
         expect(cfg.store_name).to eq(sn)
         expect(cfg.store_url).to eq(su)
+        expect(cfg.auth_url).to eq(au)
+        expect(cfg.order_base_url).to eq(obu)
         expect(cfg.api_user_email).to eq(aue)
         expect(cfg.api_user_login).to eq(aul)
         expect(cfg.automatic_register_shippo_user).to eq(false)
